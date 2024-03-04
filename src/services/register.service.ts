@@ -1,15 +1,14 @@
 import { ModelStatic } from "sequelize";
 import { Conflict, UnprocessableEntity } from "../@types/errors";
-import { IUser, userSchema } from "../@types/User";
+import { IUserForRegister, IUserForToken, registerSchema } from "../@types/User";
 import User from "../database/models/User";
 import hash from "../utils/hash";
-import { IUserForToken } from "../@types/UserForToken";
 import { createToken } from "../utils/jwt";
 
 const model: ModelStatic<User> = User;
 
-export const registerUserService = async ({email, password}: IUser): Promise<string> => {
-  const parseResult = userSchema.safeParse({email, password})
+export const registerUserService = async ({name, email, password}: IUserForRegister): Promise<string> => {
+  const parseResult = registerSchema.safeParse({name, email, password})
   if (!parseResult.success) {
     throw new UnprocessableEntity(parseResult.error.errors[0].message)
   }
@@ -18,6 +17,7 @@ export const registerUserService = async ({email, password}: IUser): Promise<str
   const [user, created] = await model.findOrCreate({
     where: { email }, 
     defaults: {
+      name,
       email, 
       password: encryptedPassword
     }
@@ -26,6 +26,7 @@ export const registerUserService = async ({email, password}: IUser): Promise<str
 
   const userForToken: IUserForToken = {
     id: user.id,
+    name,
     email,
   };
   const token = createToken(userForToken);

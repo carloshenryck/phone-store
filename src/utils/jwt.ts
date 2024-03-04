@@ -1,5 +1,5 @@
 import * as jwt from 'jsonwebtoken';
-import { IUserForToken } from '../@types/UserForToken';
+import { IUserForToken } from '../@types/User';
 
 export const verifyToken = (token: string): IUserForToken => {
   const { JWT_SECRET } = process.env;
