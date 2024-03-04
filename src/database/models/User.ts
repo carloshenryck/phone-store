@@ -26,7 +26,7 @@ User.init(
     },
  }, {
   sequelize: db,
-  tableName: 'User',
+  tableName: 'user',
   timestamps: false,
   underscored: true,
  })

@@ -37,7 +37,7 @@ PhoneAttributes.init(
     },
  }, {
   sequelize: db,
-  tableName: 'Phone',
+  tableName: 'phone_attributes',
   timestamps: false,
   underscored: true,
  })
