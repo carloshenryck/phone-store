@@ -3,6 +3,8 @@ import { Conflict, UnprocessableEntity } from "../@types/errors";
 import { IUser, userSchema } from "../@types/User";
 import User from "../database/models/User";
 import hash from "../utils/hash";
+import { IUserForToken } from "../@types/UserForToken";
+import { createToken } from "../utils/jwt";
 
 const model: ModelStatic<User> = User;
 
@@ -22,5 +24,11 @@ export const registerUserService = async ({email, password}: IUser): Promise<str
   });
   if (!created) throw new Conflict('Você já está cadastrado');
 
-  return 'Created';
+  const userForToken: IUserForToken = {
+    id: user.id,
+    email,
+  };
+  const token = createToken(userForToken);
+
+  return token;
 };
