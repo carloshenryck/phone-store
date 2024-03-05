@@ -6,6 +6,7 @@ class Phone extends Model {
   declare id: number;
   declare brand: string;
   declare model: string;
+  declare name: string;
   declare userId: number;
 }
 
@@ -22,6 +23,10 @@ Phone.init(
       allowNull: false,
     },
     model: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },

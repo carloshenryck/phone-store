@@ -18,6 +18,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
