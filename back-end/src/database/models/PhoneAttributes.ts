@@ -4,7 +4,7 @@ import Phone from "./Phone";
 
 class PhoneAttributes extends Model {
   declare id: number;
-  declare prince: number;
+  declare price: number;
   declare color: string;
   declare phoneId: number;
 }
@@ -25,7 +25,7 @@ PhoneAttributes.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    phone_id: {
+    phoneId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -47,4 +47,4 @@ PhoneAttributes.init(
   as: 'phone'
  })
 
- export default Phone;
+ export default PhoneAttributes;
