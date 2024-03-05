@@ -1,9 +1,10 @@
 import User from "../database/models/User";
 import { ModelStatic } from "sequelize";
-import { IUserForLogin, IUserForToken, loginSchema } from "../@types/User";
+import { IUserForLogin, IUserForToken } from "../@types/User";
 import { Unauthorized, UnprocessableEntity } from "../@types/errors";
 import { createToken } from "../utils/jwt";
 import hash from "../utils/hash";
+import { loginSchema } from "../schemas/user.schema";
 
 const model: ModelStatic<User> = User;
 
