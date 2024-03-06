@@ -1,7 +1,7 @@
 import User from "../database/models/User";
 import { ModelStatic } from "sequelize";
 import { IUserForLogin, IUserForToken } from "../@types/User";
-import { Unauthorized, UnprocessableEntity } from "../@types/errors";
+import { Unauthorized, UnprocessableEntity } from "../@types/express/errors";
 import { createToken } from "../utils/jwt";
 import hash from "../utils/hash";
 import { loginSchema } from "../schemas/user.schema";

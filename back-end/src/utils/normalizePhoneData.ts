@@ -1,7 +1,7 @@
 import { BasicPhone, PhoneWithDetails, PhoneWithVariations } from "../@types/Phone";
 import { isPhoneWithDetails, isPhoneWithVariations, isBasicPhone } from "./verifyPhoneInterface";
 import { basicPhoneSchema, phoneWithDetailsSchema, phoneWithVariationsSchema } from "../schemas/phone.schema";
-import { UnprocessableEntity } from "../@types/errors";
+import { UnprocessableEntity } from "../@types/express/errors";
 
 export const normalizePhoneData = (
   phone: PhoneWithDetails | PhoneWithVariations | BasicPhone

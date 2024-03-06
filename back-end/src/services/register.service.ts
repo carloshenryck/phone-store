@@ -1,5 +1,5 @@
 import { ModelStatic } from "sequelize";
-import { Conflict, UnprocessableEntity } from "../@types/errors";
+import { Conflict, UnprocessableEntity } from "../@types/express/errors";
 import { IUserForRegister, IUserForToken } from "../@types/User";
 import User from "../database/models/User";
 import hash from "../utils/hash";

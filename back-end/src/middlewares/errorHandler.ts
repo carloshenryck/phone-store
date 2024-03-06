@@ -5,7 +5,7 @@ import {
   Response,
   Express,
 } from 'express';
-import BaseError from '../@types/errors/BaseError';
+import BaseError from '../@types/express/errors/BaseError';
 
 export const createErrorHandler = (app: Express) => {
   app.use((err: BaseError, _req: Request, res: Response, _next: NextFunction) => {

@@ -4,7 +4,7 @@ import Phone from '../database/models/Phone'
 import PhoneAttributes from '../database/models/PhoneAttributes'
 import { Phone as PhoneType, PhoneWithVariations } from '../@types/Phone' 
 import { normalizePhoneData } from "../utils/normalizePhoneData";
-import { InternalServerError, NotFound } from "../@types/errors";
+import { InternalServerError, NotFound } from "../@types/express/errors";
 
 const phoneModel: ModelStatic<Phone> = Phone;
 const phoneAttributes: ModelStatic<PhoneAttributes> = PhoneAttributes;

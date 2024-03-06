@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { Unauthorized } from '../@types/errors';
+import { Unauthorized } from '../@types/express/errors';
 import { verifyToken } from '../utils/jwt';
 
 const validateToken = (req: Request, _res: Response, next: NextFunction) => {
