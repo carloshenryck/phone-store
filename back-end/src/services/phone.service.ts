@@ -4,12 +4,12 @@ import Phone from '../database/models/Phone'
 import PhoneAttributes from '../database/models/PhoneAttributes'
 import { Phone as PhoneType, PhoneWithVariations } from '../@types/Phone' 
 import { normalizePhoneData } from "../utils/normalizePhoneData";
-import { InternalServerError } from "../@types/errors";
+import { InternalServerError, NotFound } from "../@types/errors";
 
 const phoneModel: ModelStatic<Phone> = Phone;
 const phoneAttributes: ModelStatic<PhoneAttributes> = PhoneAttributes;
 
-export const registerPhoneService = async (phone: PhoneType, userId: number): Promise<string> => {  
+export const registerPhoneService = async (phone: PhoneType, userId: number) => {  
   const normalizedPhoneData = normalizePhoneData(phone);
   const { name, brand, model, data} = normalizedPhoneData
 
@@ -73,3 +73,18 @@ export const getUserPhonesService = async (userId: number) => {
   
   return phones;
 }
+
+export const deletePhoneService = async (phoneId: number, userId: number) => {
+  const deletedPhone = await Phone.destroy({
+    where: {
+      id: phoneId,
+      userId,
+    },
+  });
+
+  if (!deletedPhone) {
+    throw new NotFound('Celular não encontrado')
+  }
+
+  return 'Deletado com sucesso';
+};
