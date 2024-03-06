@@ -25,6 +25,8 @@ module.exports = {
           model: "phone",
           key: "id",
         },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
     });
   },
