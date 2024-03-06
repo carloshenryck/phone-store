@@ -48,11 +48,6 @@ Phone.init(
   underscored: true,
  })
 
- Phone.belongsTo(User, {
-  foreignKey: 'userId',
-  as: 'user'
- })
-
  Phone.hasMany(PhoneAttributes, {
   foreignKey: 'phoneId',
   as: 'variations'
