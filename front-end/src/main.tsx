@@ -4,6 +4,7 @@ import "./index.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login/index.tsx";
 import Register from "./pages/Register/index.tsx";
+import { Toaster } from "sonner";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -12,6 +13,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
+      <Toaster />
     </BrowserRouter>
   </React.StrictMode>
 );
