@@ -11,10 +11,10 @@ const phoneAttributes: ModelStatic<PhoneAttributes> = PhoneAttributes;
 
 export const registerPhoneService = async (phone: PhoneType, userId: number) => {  
   const normalizedPhoneData = normalizePhoneData(phone);
-  const { name, brand, model, data} = normalizedPhoneData
+  const { name, brand, model, data} = normalizedPhoneData;
+  const transaction =  await sequelize.transaction();
 
   try {
-    const transaction =  await sequelize.transaction();
     const phone = await phoneModel.create(
       { name, brand, model, userId }, 
       { transaction }
@@ -33,6 +33,7 @@ export const registerPhoneService = async (phone: PhoneType, userId: number) => 
     await transaction.commit()
     return 'Adicionado com sucesso'
   } catch (error) {
+    await transaction.rollback();
     throw new InternalServerError('Algum erro ocorreu, tente novamente mais tarde!')
   }
 }
@@ -41,7 +42,7 @@ export const getAllPhonesService = async () => {
   const phones = await phoneModel.findAll({
     include: {
       model: phoneAttributes,
-      as: 'variations',
+      as: 'data',
       attributes: {
         exclude: ['id', 'phoneId']
       }
@@ -58,7 +59,7 @@ export const getUserPhonesService = async (userId: number) => {
   const phones = await phoneModel.findAll({
     include: {
       model: phoneAttributes,
-      as: 'variations',
+      as: 'data',
       attributes: {
         exclude: ['id', 'phoneId']
       }
@@ -86,5 +87,33 @@ export const deletePhoneService = async (phoneId: number, userId: number) => {
     throw new NotFound('Celular não encontrado')
   }
 
-  return 'Deletado com sucesso';
+  const updatedUserPhones = getUserPhonesService(userId);
+  return updatedUserPhones;
 };
+
+export const updatePhoneService = async (phoneId: number, userId: number, data: Partial<PhoneWithVariations>) => {
+  const phone = await phoneModel.findOne({
+    where: {
+      userId,
+      id: phoneId
+    },
+  });
+
+  if (!phone) {
+    throw new NotFound('Celular não encontrado')
+  }
+
+  await phoneModel.update({
+    brand: data.brand ?? phone.brand,
+    name: data.name ?? phone.name,
+    model: data.model ?? phone.model,
+  }, {
+    where: {
+      userId,
+      id: phoneId
+    },
+  })
+
+  const updatedUserPhones = getUserPhonesService(userId);
+  return updatedUserPhones;
+}

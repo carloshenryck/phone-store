@@ -4,7 +4,8 @@ import {
   deletePhoneController, 
   getAllPhonesController, 
   getUserPhonesController, 
-  registerPhoneControler 
+  registerPhoneControler, 
+  updatePhoneController
 } from '../controllers/phone.controller';
 import validateToken from '../middlewares/tokenValidator';
 
@@ -14,5 +15,6 @@ router.get('/getAll', validateToken, errorHandlerWrapper(getAllPhonesController)
 router.get('/getUserPhones', validateToken, errorHandlerWrapper(getUserPhonesController));
 router.post('/', validateToken, errorHandlerWrapper(registerPhoneControler));
 router.delete('/:phoneId', validateToken, errorHandlerWrapper(deletePhoneController));
+router.patch('/:phoneId', validateToken, errorHandlerWrapper(updatePhoneController));
 
 export default router;

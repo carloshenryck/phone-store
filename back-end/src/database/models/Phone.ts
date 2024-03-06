@@ -50,7 +50,7 @@ Phone.init(
 
  Phone.hasMany(PhoneAttributes, {
   foreignKey: 'phoneId',
-  as: 'variations'
+  as: 'data'
  })
 
  PhoneAttributes.belongsTo(Phone, {
