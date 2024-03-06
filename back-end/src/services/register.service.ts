@@ -8,7 +8,7 @@ import { registerSchema } from "../schemas/user.schema";
 
 const model: ModelStatic<User> = User;
 
-export const registerUserService = async ({name, email, password}: IUserForRegister): Promise<string> => {
+export const registerUserService = async ({name, email, password}: IUserForRegister) => {
   const parseResult = registerSchema.safeParse({name, email, password})
   if (!parseResult.success) {
     throw new UnprocessableEntity(parseResult.error.errors[0].message)
