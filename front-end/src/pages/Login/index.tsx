@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { baseUrl } from "../../utils/baseUrl";
-import { toast } from "sonner";
-import { Toaster } from "@/components/ui/sonner";
 import Spinner from "@/components/Spinner";
+import { fetchApi } from "@/utils/fetchApi";
+import { addToken, isUserLogged } from "@/utils/verifyToken";
 
 export default function Login() {
   const [email, setEmail] = useState<string>("");
@@ -13,32 +12,20 @@ export default function Login() {
 
   const handleLogin = async () => {
     setIsLoading(true);
-    try {
-      const result = await fetch(baseUrl("/login"), {
-        method: "POST",
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-        headers: new Headers({
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        }),
-      });
-
-      if (!result.ok) {
-        const jsonResult = await result.json();
-        toast(jsonResult.message);
-      }
-    } catch (error) {
-      toast("Erro inesperado! Tente novamente mais tarde");
-    }
+    const response = await fetchApi("/login", "POST", {
+      email,
+      password,
+    });
     setIsLoading(false);
+
+    if (response && response.data) {
+      addToken(response.data);
+      navigate("/home");
+    }
   };
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
+    if (isUserLogged()) {
       navigate("/home");
     }
   }, []);
@@ -51,7 +38,6 @@ export default function Login() {
           Insira suas inforações abaixo para realizar login
         </p>
       </div>
-
       <div className="mt-9 flex flex-col gap-5 w-4/5 sm:w-96">
         <label htmlFor="email-input" className="flex flex-col">
           <span className="text-lg sm:text-xl">Email</span>
@@ -78,7 +64,6 @@ export default function Login() {
           />
         </label>
       </div>
-
       <div className="button_container flex flex-col mt-28 sm:mt-16 items-center w-4/5 sm:w-96">
         <button
           className="bg-blue-400 w-full h-12 rounded-lg font-medium text-lg sm:text-xl hover:bg-blue-300 transition-colors text-white disabled:bg-blue-300"
@@ -87,7 +72,7 @@ export default function Login() {
           disabled={isLoading}
         >
           {isLoading ? (
-            <Spinner className="h-4 w-4 border-[2px] text-blue-600" />
+            <Spinner className="h-4 w-4 border-[2px] text-blue-500" />
           ) : (
             "Entrar"
           )}
@@ -103,9 +88,6 @@ export default function Login() {
           </button>
         </div>
       </div>
-      <Toaster
-        toastOptions={{ style: { backgroundColor: "#dc2626", border: "none" } }}
-      />
     </div>
   );
 }
