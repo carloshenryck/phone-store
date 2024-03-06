@@ -5,7 +5,7 @@
   "main": "src/server.ts",
   "scripts": {
     "dev": "tsnd --respawn .",
-    "build": "npx tsc"
+    "vercel-build": "npx sequelize db:migrate"
   },
   "keywords": [],
   "author": "",
