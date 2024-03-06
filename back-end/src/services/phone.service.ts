@@ -2,14 +2,14 @@ import sequelize from "../database/models";
 import { ModelStatic } from "sequelize";
 import Phone from '../database/models/Phone'
 import PhoneAttributes from '../database/models/PhoneAttributes'
-import { Phone as PhoneType } from '../@types/Phone' 
+import { Phone as PhoneType, PhoneWithVariations } from '../@types/Phone' 
 import { normalizePhoneData } from "../utils/normalizePhoneData";
 import { InternalServerError } from "../@types/errors";
 
 const phoneModel: ModelStatic<Phone> = Phone;
-const phoneAttributes: ModelStatic<PhoneAttributes> = PhoneAttributes
+const phoneAttributes: ModelStatic<PhoneAttributes> = PhoneAttributes;
 
-export const registerPhoneService = async (phone: PhoneType, userId: number) => {  
+export const registerPhoneService = async (phone: PhoneType, userId: number): Promise<string> => {  
   const normalizedPhoneData = normalizePhoneData(phone);
   const { name, brand, model, data} = normalizedPhoneData
 
@@ -35,4 +35,41 @@ export const registerPhoneService = async (phone: PhoneType, userId: number) => 
   } catch (error) {
     throw new InternalServerError('Algum erro ocorreu, tente novamente mais tarde!')
   }
+}
+
+export const getAllPhonesService = async () => {
+  const phones = await phoneModel.findAll({
+    include: {
+      model: phoneAttributes,
+      as: 'variations',
+      attributes: {
+        exclude: ['id', 'phoneId']
+      }
+    },
+    attributes: {
+      exclude: ['userId']
+    }
+  });
+  
+  return phones;
+}
+
+export const getUserPhonesService = async (userId: number) => {
+  const phones = await phoneModel.findAll({
+    include: {
+      model: phoneAttributes,
+      as: 'variations',
+      attributes: {
+        exclude: ['id', 'phoneId']
+      }
+    },
+    attributes: {
+      exclude: ['userId']
+    },
+    where: {
+      userId,
+    },
+  });
+  
+  return phones;
 }
