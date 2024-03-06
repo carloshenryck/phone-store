@@ -1,6 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import db from '.'
 import User from "./User";
+import PhoneAttributes from "./PhoneAttributes";
 
 class Phone extends Model {
   declare id: number;
@@ -50,6 +51,15 @@ Phone.init(
  Phone.belongsTo(User, {
   foreignKey: 'userId',
   as: 'user'
+ })
+
+ Phone.hasMany(PhoneAttributes, {
+  foreignKey: 'phoneId',
+  as: 'variations'
+ })
+
+ PhoneAttributes.belongsTo(Phone, {
+  foreignKey: 'phoneId',
  })
 
  export default Phone;

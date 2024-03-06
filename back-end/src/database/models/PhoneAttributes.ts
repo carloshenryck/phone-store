@@ -42,9 +42,4 @@ PhoneAttributes.init(
   underscored: true,
  })
 
- PhoneAttributes.belongsTo(Phone, {
-  foreignKey: 'phoneId',
-  as: 'phone'
- })
-
  export default PhoneAttributes;
