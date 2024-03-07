@@ -26,9 +26,12 @@ export default function Header() {
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="ml-24">
-          <DropdownMenuItem className="flex gap-2 items-center">
+          <DropdownMenuItem
+            className="flex gap-2 items-center"
+            onClick={() => navigate("/user-phones")}
+          >
             <User className="w-4 h-4 text-zinc-700" weight="bold" />
-            Minha conta
+            Meus produtos
           </DropdownMenuItem>
           <DropdownMenuItem
             className="flex gap-2 items-center"
