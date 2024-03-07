@@ -15,8 +15,7 @@ import { useState } from "react";
 import DeletePhoneAlert from "./DeletePhoneAlert";
 import { fetchApi } from "@/utils/fetchApi";
 import { toast } from "sonner";
-import { usePhoneStore } from "@/stores/PhoneStore";
-
+import { useUserPhoneStore } from "@/stores/UserPhoneStore";
 interface PhoneCardProps extends Phone {
   isAuthor?: boolean;
 }
@@ -28,7 +27,7 @@ export default function PhoneCard({
   name,
   isAuthor,
 }: PhoneCardProps) {
-  const { setPhones } = usePhoneStore();
+  const { setUserPhones } = useUserPhoneStore();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
 
@@ -51,7 +50,7 @@ export default function PhoneCard({
           border: "none",
         },
       });
-      setPhones(response.data);
+      setUserPhones(response.data);
     }
   };
 

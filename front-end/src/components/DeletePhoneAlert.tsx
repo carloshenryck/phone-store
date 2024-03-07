@@ -53,9 +53,7 @@ export default function DeletePhoneAlert({
             {isLoading ? (
               <Spinner className="h-4 w-4 border-[2px] text-red-400" />
             ) : (
-              <p className={isLoading ? "opacity-0" : "opacity-100"}>
-                Continuar
-              </p>
+              <p>Continuar</p>
             )}
           </AlertDialogAction>
         </AlertDialogFooter>

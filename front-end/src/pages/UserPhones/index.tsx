@@ -4,22 +4,20 @@ import { useEffect, useState } from "react";
 import { Phone } from "@/@types/Phone";
 import Spinner from "@/components/Spinner";
 import PhoneCard from "@/components/PhoneCard";
-import { usePhoneStore } from "@/stores/PhoneStore";
+import { useUserPhoneStore } from "@/stores/UserPhoneStore";
 import { Plus } from "@phosphor-icons/react";
 import AddPhoneDialog from "@/components/AddPhoneDialog";
 import Header from "@/components/Header";
 
 export default function UserPhones() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isAddPhoneDialogOpen, setIsAddPhoneDialogOpen] =
     useState<boolean>(false);
-  const { phones, setPhones } = usePhoneStore();
-
-  const addPhone = () => {};
+  const { userPhones, setUserPhones } = useUserPhoneStore();
 
   useEffect(() => {
     fetchApi<Phone[]>("/phone/getUserPhones").then((response) => {
-      setPhones(response?.data ?? []);
+      setUserPhones(response?.data ?? []);
       setIsLoading(false);
     });
   }, []);
@@ -45,9 +43,9 @@ export default function UserPhones() {
           <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <Spinner className="h-16 w-16 border-[6px]" />
           </div>
-        ) : phones.length > 0 ? (
+        ) : userPhones.length > 0 ? (
           <div className="grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-4">
-            {phones.map((phone) => (
+            {userPhones.map((phone) => (
               <PhoneCard key={phone.id} {...phone} isAuthor />
             ))}
           </div>
@@ -60,8 +58,6 @@ export default function UserPhones() {
       <AddPhoneDialog
         isDialogOpen={isAddPhoneDialogOpen}
         setIsDialogOpen={setIsAddPhoneDialogOpen}
-        isLoading={isLoading}
-        addFunction={addPhone}
       />
     </div>
   );

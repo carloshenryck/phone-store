@@ -3,13 +3,12 @@ import Header from "@/components/Header";
 import Input from "@/components/Input";
 import PhoneCard from "@/components/PhoneCard";
 import Spinner from "@/components/Spinner";
-import { usePhoneStore } from "@/stores/PhoneStore";
 import { fetchApi } from "@/utils/fetchApi";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const { phones, setPhones } = usePhoneStore();
+  const [phones, setPhones] = useState<Phone[]>([]);
 
   useEffect(() => {
     fetchApi<Phone[]>("/phone/getAll").then((response) => {
