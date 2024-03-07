@@ -16,6 +16,7 @@ import DeletePhoneAlert from "./DeletePhoneAlert";
 import { fetchApi } from "@/utils/fetchApi";
 import { toast } from "sonner";
 import { useUserPhoneStore } from "@/stores/UserPhoneStore";
+import UpdatePhoneDialog from "./UpdatePhoneDialog";
 interface PhoneCardProps extends Phone {
   isAuthor?: boolean;
 }
@@ -25,11 +26,13 @@ export default function PhoneCard({
   brand,
   data,
   name,
+  model,
   isAuthor,
 }: PhoneCardProps) {
   const { setUserPhones } = useUserPhoneStore();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
 
   const getCheapestPrice = (variations: phoneVariations[]): number => {
     const prices = variations.map((variation) => variation.price);
@@ -65,7 +68,10 @@ export default function PhoneCard({
                 weight="fill"
               />
               <DropdownMenuContent>
-                <DropdownMenuItem className="flex gap-2 items-center">
+                <DropdownMenuItem
+                  className="flex gap-2 items-center"
+                  onClick={() => setIsEditModalOpen(true)}
+                >
                   <PencilSimple
                     className="w-4 h-4 text-zinc-700"
                     weight="bold"
@@ -87,6 +93,17 @@ export default function PhoneCard({
             setIsAlertOpen={setIsAlertOpen}
             deleteFunction={deletePhone}
             isLoading={isLoading}
+          />
+          <UpdatePhoneDialog
+            isDialogOpen={isEditModalOpen}
+            setIsDialogOpen={setIsEditModalOpen}
+            phoneData={{
+              id,
+              brand,
+              data,
+              name,
+              model,
+            }}
           />
         </>
       )}

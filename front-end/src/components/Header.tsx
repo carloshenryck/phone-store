@@ -1,3 +1,4 @@
+import { User as IUser } from "@/@types/User";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -6,9 +7,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useUserStore } from "@/stores/UserStore";
+import { fetchApi } from "@/utils/fetchApi";
 import { getNameInitials } from "@/utils/getNameInitials";
 import { removeToken } from "@/utils/verifyToken";
 import { HouseSimple, SignOut, User } from "@phosphor-icons/react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Header() {
@@ -20,6 +23,16 @@ export default function Header() {
     navigate("/");
     setUser(null);
   };
+
+  useEffect(() => {
+    if (!user) {
+      fetchApi<IUser>("/me").then((response) => {
+        if (response?.data) {
+          setUser(response.data);
+        }
+      });
+    }
+  }, []);
 
   return (
     <div>

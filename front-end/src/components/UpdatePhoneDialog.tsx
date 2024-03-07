@@ -9,7 +9,7 @@ import {
 import { Button } from "./ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   SelectTrigger,
   SelectValue,
@@ -17,7 +17,6 @@ import {
   SelectItem,
   Select,
 } from "@/components/ui/select";
-import { Plus, TrashSimple } from "@phosphor-icons/react";
 import { fetchApi } from "@/utils/fetchApi";
 import { toast } from "sonner";
 import { Phone } from "@/@types/Phone";
@@ -27,14 +26,17 @@ import Spinner from "./Spinner";
 interface AddPhoneDialogProps {
   isDialogOpen: boolean;
   setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  phoneData: Phone;
 }
+
 interface Variation {
   [key: string]: string;
 }
 
-export default function AddPhoneDialog({
+export default function UpdatePhoneDialog({
   isDialogOpen,
   setIsDialogOpen,
+  phoneData,
 }: AddPhoneDialogProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { setUserPhones } = useUserPhoneStore();
@@ -45,7 +47,7 @@ export default function AddPhoneDialog({
     { price: "", color: "", img: "" },
   ]);
 
-  const addPhone = async () => {
+  const editPhone = async () => {
     setIsLoading(true);
 
     const normalizedVariations = variations.map((variation) => ({
@@ -53,17 +55,21 @@ export default function AddPhoneDialog({
       price: +variation.price,
     }));
 
-    const response = await fetchApi<Phone[]>(`/phone`, "POST", {
-      name,
-      brand,
-      model,
-      data: normalizedVariations,
-    });
+    const response = await fetchApi<Phone[]>(
+      `/phone/${phoneData.id}`,
+      "PATCH",
+      {
+        name,
+        brand,
+        model,
+        data: normalizedVariations,
+      }
+    );
 
     setIsLoading(false);
 
     if (response?.data) {
-      toast("Adicionado com sucesso!", {
+      toast("Alterado com sucesso!", {
         style: {
           background: "green",
           color: "white",
@@ -72,7 +78,6 @@ export default function AddPhoneDialog({
       });
       setUserPhones(response.data);
       setIsDialogOpen(false);
-      cleanData();
     }
   };
 
@@ -85,29 +90,24 @@ export default function AddPhoneDialog({
     setVariations(data);
   };
 
-  const addFields = () => {
-    const newfield = { price: "", color: "", img: "" };
-    setVariations([...variations, newfield]);
-  };
-
-  const removeField = (index: number) => {
-    const data = [...variations];
-    data.splice(index, 1);
-    setVariations(data);
-  };
-
-  const cleanData = () => {
-    setName("");
-    setBrand("");
-    setModel("");
-    setVariations([{ price: "", color: "", img: "" }]);
-  };
+  useEffect(() => {
+    if (isDialogOpen) {
+      const variations = phoneData.data.map((variation) => ({
+        ...variation,
+        price: variation.price.toString(),
+      }));
+      setName(phoneData.name);
+      setBrand(phoneData.brand);
+      setModel(phoneData.model);
+      setVariations(variations);
+    }
+  }, [isDialogOpen]);
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogContent className="sm:max-w-[425px] max-h-[50rem] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Adicionar celular</DialogTitle>
+          <DialogTitle>Editar Celular</DialogTitle>
           <DialogDescription>
             Clique em salvar quando você finalizar
           </DialogDescription>
@@ -155,18 +155,9 @@ export default function AddPhoneDialog({
           <div className="flex flex-col gap-10">
             {variations.map((variation, index) => (
               <div className="flex flex-col gap-2">
-                <div className="flex justify-between items-center mt-4">
-                  <p className="text-orange-400 font-medium">
-                    Variação {(index + 1).toString().padStart(2, "0")}
-                  </p>
-                  {variations.length > 1 && (
-                    <TrashSimple
-                      className="text-orange-400 w-5 h-5 cursor-pointer"
-                      weight="bold"
-                      onClick={() => removeField(index)}
-                    />
-                  )}
-                </div>
+                <p className="text-orange-400 font-medium mt-4">
+                  Variação {(index + 1).toString().padStart(2, "0")}
+                </p>
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor={`price-${index}`} className="text-right">
                     Valor
@@ -210,20 +201,9 @@ export default function AddPhoneDialog({
         </div>
         <DialogFooter>
           <Button
-            className="border border-solid border-orange-300 bg-transparent text-orange-300 hover:bg-transparent transition-colors flex gap-2"
-            onClick={addFields}
-            disabled={isLoading}
-          >
-            <Plus
-              className="text-orange-400 w-5 h-5 cursor-pointer"
-              weight="bold"
-            />
-            Adicionar nova variação
-          </Button>
-          <Button
             type="submit"
             className="bg-orange-400 hover:bg-orange-300 disabled:bg-orange-300 transition-colors"
-            onClick={addPhone}
+            onClick={editPhone}
             disabled={isLoading}
           >
             {isLoading ? (

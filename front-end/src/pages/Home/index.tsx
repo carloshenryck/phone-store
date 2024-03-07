@@ -1,5 +1,4 @@
 import { Phone } from "@/@types/Phone";
-import { User } from "@/@types/User";
 import Header from "@/components/Header";
 import Input from "@/components/Input";
 import PhoneCard from "@/components/PhoneCard";
@@ -19,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const navigate = useNavigate();
-  const { user, setUser } = useUserStore();
+  const { user } = useUserStore();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [phones, setPhones] = useState<Phone[]>([]);
@@ -48,14 +47,6 @@ export default function Home() {
     if (!isUserLogged()) {
       navigate("/");
       return;
-    }
-
-    if (!user) {
-      fetchApi<User>("/me").then((response) => {
-        if (response?.data) {
-          setUser(response.data);
-        }
-      });
     }
 
     fetchApi<Phone[]>("/phone/getAll").then((response) => {
