@@ -43,7 +43,7 @@ Phone.init(
  }, {
   sequelize: db,
   tableName: 'phone',
-  timestamps: true,
+  timestamps: false,
   underscored: true,
  })
 
