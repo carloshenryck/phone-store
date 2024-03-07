@@ -1,16 +1,27 @@
 import { Phone } from "@/@types/Phone";
+import { User } from "@/@types/User";
 import Header from "@/components/Header";
 import Input from "@/components/Input";
 import PhoneCard from "@/components/PhoneCard";
 import Spinner from "@/components/Spinner";
+import { useUserStore } from "@/stores/UserStore";
 import { fetchApi } from "@/utils/fetchApi";
 import { useEffect, useState } from "react";
 
 export default function Home() {
+  const { user, setUser } = useUserStore();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [phones, setPhones] = useState<Phone[]>([]);
 
   useEffect(() => {
+    if (!user) {
+      fetchApi<User>("/me").then((response) => {
+        if (response?.data) {
+          setUser(response.data);
+        }
+      });
+    }
+
     fetchApi<Phone[]>("/phone/getAll").then((response) => {
       setPhones(response?.data ?? []);
       setIsLoading(false);
@@ -20,9 +31,11 @@ export default function Home() {
   return (
     <div className="w-4/5 mx-auto max-w-[1250px] pb-16 pt-8">
       <Header />
-      <h1 className="mt-14 text-5xl font-light text-zinc-800">
-        Olá, <span className="text-orange-400">Fulano</span>
-      </h1>
+      {user && (
+        <h1 className="mt-14 text-5xl font-light text-zinc-800">
+          Olá, <span className="text-orange-400">{user?.name}</span>
+        </h1>
+      )}
       <div className="mt-4">
         <Input />
       </div>

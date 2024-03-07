@@ -5,16 +5,20 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useUserStore } from "@/stores/UserStore";
+import { getNameInitials } from "@/utils/getNameInitials";
 import { removeToken } from "@/utils/verifyToken";
-import { User, SignOut } from "@phosphor-icons/react";
+import { HouseSimple, SignOut, User } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
 
 export default function Header() {
+  const { user, setUser } = useUserStore();
   const navigate = useNavigate();
 
   const handleLogOut = () => {
     removeToken();
     navigate("/");
+    setUser(null);
   };
 
   return (
@@ -22,19 +26,28 @@ export default function Header() {
       <DropdownMenu>
         <DropdownMenuTrigger>
           <Avatar className="w-12 h-12 border-[3px] border-orange-400 cursor-pointer">
-            <AvatarFallback>CN</AvatarFallback>
+            {user?.name && (
+              <AvatarFallback>{getNameInitials(user?.name)}</AvatarFallback>
+            )}
           </Avatar>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="ml-24">
+        <DropdownMenuContent className="ml-28">
           <DropdownMenuItem
-            className="flex gap-2 items-center"
+            className="flex gap-4 items-center"
+            onClick={() => navigate("/home")}
+          >
+            <HouseSimple className="w-4 h-4 text-zinc-700" weight="bold" />
+            Início
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="flex gap-4 items-center"
             onClick={() => navigate("/user-phones")}
           >
             <User className="w-4 h-4 text-zinc-700" weight="bold" />
             Meus produtos
           </DropdownMenuItem>
           <DropdownMenuItem
-            className="flex gap-2 items-center"
+            className="flex gap-4 items-center"
             onClick={handleLogOut}
           >
             <SignOut className="w-4 h-4 text-red-500" weight="bold" />
