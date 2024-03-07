@@ -4,7 +4,8 @@ import Phone from '../database/models/Phone'
 import PhoneAttributes from '../database/models/PhoneAttributes'
 import { Phone as PhoneType, PhoneWithVariations } from '../@types/Phone' 
 import { normalizePhoneData } from "../utils/normalizePhoneData";
-import { InternalServerError, NotFound } from "../@types/express/errors";
+import { InternalServerError, NotFound, UnprocessableEntity } from "../@types/express/errors";
+import { phoneWithVariationsSchema } from "../schemas/phone.schema";
 
 const phoneModel: ModelStatic<Phone> = Phone;
 const phoneAttributes: ModelStatic<PhoneAttributes> = PhoneAttributes;
@@ -93,29 +94,55 @@ export const deletePhoneService = async (phoneId: number, userId: number) => {
   return updatedUserPhones;
 };
 
-export const updatePhoneService = async (phoneId: number, userId: number, data: Partial<PhoneWithVariations>) => {
-  const phone = await phoneModel.findOne({
-    where: {
-      userId,
-      id: phoneId
-    },
-  });
-
-  if (!phone) {
-    throw new NotFound('Celular não encontrado')
+export const updatePhoneService = async (phoneId: number, userId: number, data: PhoneWithVariations) => {
+  const parseResult = phoneWithVariationsSchema.safeParse(data)
+  if (!parseResult.success) {
+    throw new UnprocessableEntity('Preencha todos os campos');
   }
 
-  await phoneModel.update({
-    brand: data.brand ?? phone.brand,
-    name: data.name ?? phone.name,
-    model: data.model ?? phone.model,
-  }, {
+  const phone = await phoneModel.findOne({
     where: {
-      userId,
-      id: phoneId
-    },
+      id: phoneId,
+      userId
+    }
   })
 
-  const updatedUserPhones = getUserPhonesService(userId);
-  return updatedUserPhones;
+  if (!phone) {
+    throw new NotFound('Ceular não encontrado');
+  }
+
+  const transaction =  await sequelize.transaction();
+  try {
+    await phoneModel.update({
+      brand: data.brand,
+      name: data.name,
+      model: data.model 
+    }, {
+      where: {
+        id: phoneId
+      },
+      transaction
+    })
+
+    await Promise.all(data.data.map(async (variation) => {
+      return await phoneAttributes.update(
+        { 
+          price: variation.price, 
+          color: variation.color, 
+        }, {
+          where: {
+            phoneId: phoneId,
+          },
+          transaction
+        }
+      );
+    }));
+
+    const updatedUserPhones = getUserPhonesService(userId);
+    await transaction.commit();
+    return updatedUserPhones;
+  } catch (error) {
+    await transaction.rollback();
+    throw new InternalServerError('Algum erro ocorreu, tente novamente mais tarde!')
+  }
 }
