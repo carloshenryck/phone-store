@@ -51,7 +51,7 @@ export default function DeletePhoneAlert({
             onClick={deleteFunction}
           >
             {isLoading ? (
-              <Spinner className="h-4 w-4 border-[2px] text-red-400" />
+              <Spinner className="h-4 w-4 border-[2px] text-red-300" />
             ) : (
               <p>Continuar</p>
             )}

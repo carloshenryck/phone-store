@@ -1,4 +1,3 @@
-import Input from "@/components/Input";
 import { fetchApi } from "@/utils/fetchApi";
 import { useEffect, useState } from "react";
 import { Phone } from "@/@types/Phone";
@@ -28,11 +27,8 @@ export default function UserPhones() {
       <h1 className="mt-14 text-5xl font-light text-zinc-800">
         Seus <span className="text-orange-400">produtos</span>
       </h1>
-      <div className="mt-4">
-        <Input />
-      </div>
       <button
-        className="mt-16 bg-orange-400 text-white p-3 rounded-md hover:bg-orange-300 transition-colors flex gap-2 items-center"
+        className="mt-14 bg-orange-400 text-white p-3 rounded-md hover:bg-orange-300 transition-colors flex gap-2 items-center"
         onClick={() => setIsAddPhoneDialogOpen(true)}
       >
         <Plus className="text-white w-6 h-6" weight="bold" />
