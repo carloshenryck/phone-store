@@ -111,6 +111,12 @@ export const updatePhoneService = async (phoneId: number, userId: number, data: 
     throw new NotFound('Ceular não encontrado');
   }
 
+  const variations = await phoneAttributes.findAll({
+    where: {
+      phoneId: phone.id,
+    }
+  })
+
   const transaction =  await sequelize.transaction();
   try {
     await phoneModel.update({
@@ -124,13 +130,15 @@ export const updatePhoneService = async (phoneId: number, userId: number, data: 
       transaction
     })
 
-    await Promise.all(data.data.map(async (variation) => {
+    await Promise.all(variations.map(async (variation, index) => {
       return await phoneAttributes.update(
         { 
-          price: variation.price, 
-          color: variation.color, 
+          price: data.data[index].price, 
+          color: data.data[index].color, 
+          img: data.data[index].img,
         }, {
           where: {
+            id: variation.id,
             phoneId: phoneId,
           },
           transaction,
