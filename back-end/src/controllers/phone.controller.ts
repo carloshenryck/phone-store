@@ -3,8 +3,8 @@ import { Phone, PhoneWithVariations } from "../@types/Phone";
 import { deletePhoneService, getAllPhonesService, getUserPhonesService, registerPhoneService, updatePhoneService } from "../services/phone.service";
 
 export const registerPhoneControler: RequestHandler<unknown, unknown, Phone> = async (req, res) => {
-  const message = await registerPhoneService(req.body, req.user.id)
-  return res.status(200).json({message});
+  const data = await registerPhoneService(req.body, req.user.id)
+  return res.status(200).json({data});
 }
 
 export const getAllPhonesController = async (_req: Request, res: Response) => {

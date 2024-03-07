@@ -32,7 +32,8 @@ export const registerPhoneService = async (phone: PhoneType, userId: number) => 
     }));
 
     await transaction.commit()
-    return 'Adicionado com sucesso'
+    const updatedUserPhones = await getUserPhonesService(userId);
+    return updatedUserPhones;
   } catch (error) {
     await transaction.rollback();
     throw new InternalServerError('Algum erro ocorreu, tente novamente mais tarde!')
