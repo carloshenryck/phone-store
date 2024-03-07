@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Spinner from "@/components/Spinner";
 import { fetchApi } from "@/utils/fetchApi";
 import { addToken, isUserLogged } from "@/utils/verifyToken";
@@ -12,13 +12,13 @@ export default function Login() {
 
   const handleLogin = async () => {
     setIsLoading(true);
-    const response = await fetchApi("/login", "POST", {
+    const response = await fetchApi<string>("/login", "POST", {
       email,
       password,
     });
     setIsLoading(false);
 
-    if (response && response.data) {
+    if (response?.data) {
       addToken(response.data);
       navigate("/home");
     }
@@ -66,26 +66,22 @@ export default function Login() {
       </div>
       <div className="button_container flex flex-col mt-28 sm:mt-16 items-center w-4/5 sm:w-96">
         <button
-          className="bg-blue-400 w-full h-12 rounded-lg font-medium text-lg sm:text-xl hover:bg-blue-300 transition-colors text-white disabled:bg-blue-300"
+          className="bg-orange-400 w-full h-12 rounded-lg font-medium text-lg sm:text-xl hover:bg-orange-300 transition-colors text-white disabled:bg-orange-300"
           type="button"
           onClick={handleLogin}
           disabled={isLoading}
         >
           {isLoading ? (
-            <Spinner className="h-4 w-4 border-[2px] text-blue-500" />
+            <Spinner className="h-4 w-4 border-[2px] text-orange-400" />
           ) : (
             "Entrar"
           )}
         </button>
         <div className="mt-5 whitespace-nowrap">
           <span className="text-[#bdbdbd] text-base">Não tem uma conta ? </span>
-          <button
-            type="button"
-            className="text-base"
-            onClick={() => navigate("/register")}
-          >
+          <Link to={"/register"} className="text-base">
             Cadastre-se.
-          </button>
+          </Link>
         </div>
       </div>
     </div>

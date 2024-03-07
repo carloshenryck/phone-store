@@ -2,7 +2,7 @@ import Spinner from "@/components/Spinner";
 import { fetchApi } from "@/utils/fetchApi";
 import { addToken, isUserLogged } from "@/utils/verifyToken";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 export default function Register() {
@@ -14,13 +14,13 @@ export default function Register() {
 
   const handleRegister = async () => {
     setIsLoading(true);
-    const response = await fetchApi("/register", "POST", {
+    const response = await fetchApi<string>("/register", "POST", {
       email,
       password,
       name,
     });
 
-    if (response && response.data) {
+    if (response?.data) {
       toast("Cadastrado com sucesso!", {
         style: {
           background: "green",
@@ -93,14 +93,14 @@ export default function Register() {
         mt-28 sm:mt-16 items-center w-4/5 sm:w-96"
       >
         <button
-          className="bg-blue-400 w-full h-12 rounded-lg font-medium text-lg sm:text-xl
-          hover:bg-blue-300 transition-colors text-white disabled:bg-blue-300"
+          className="bg-orange-400 w-full h-12 rounded-lg font-medium text-lg sm:text-xl
+          hover:bg-orange-300 transition-colors text-white disabled:bg-orange-300"
           type="button"
           onClick={handleRegister}
           disabled={isLoading}
         >
           {isLoading ? (
-            <Spinner className="h-4 w-4 border-[2px] text-blue-500" />
+            <Spinner className="h-4 w-4 border-[2px] text-orange-400" />
           ) : (
             "Cadastrar"
           )}
@@ -109,9 +109,9 @@ export default function Register() {
           <span className="text-[#bdbdbd] text-base">
             Já possui uma conta ?{" "}
           </span>
-          <button type="button" className="text-base">
+          <Link to={"/"} className="text-base">
             Login.
-          </button>
+          </Link>
         </div>
       </div>
     </div>
