@@ -5,7 +5,7 @@
 ## API
 Base URL: **https://phone-store-ivory-omega.vercel.app**
 
-Para utilizar a rota de maneira externa, faça um registro ou login nas rotas **/register** ou **/login** respectivamente, e envie o token de autorização obtido no header authorization para cada rota que você queira acessar.
+Para utilizar a rota de maneira externa, faça um registro ou login através das rotas **/register** ou **/login** respectivamente, e envie o token de autorização obtido no header authorization para cada rota que você queira acessar.
 
 ### Rotas
 - **/login** - POST
