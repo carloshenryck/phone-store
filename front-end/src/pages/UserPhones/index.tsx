@@ -5,10 +5,9 @@ import { Phone } from "@/@types/Phone";
 import Spinner from "@/components/Spinner";
 import PhoneCard from "@/components/PhoneCard";
 import { usePhoneStore } from "@/stores/PhoneStore";
-import { useNavigate } from "react-router-dom";
+import { Plus } from "@phosphor-icons/react";
 
 export default function UserPhones() {
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { phones, setPhones } = usePhoneStore();
 
@@ -27,7 +26,11 @@ export default function UserPhones() {
       <div className="mt-4">
         <Input />
       </div>
-      <div className="mt-16">
+      <button className="mt-16 bg-orange-400 text-white p-3 rounded-md hover:bg-orange-300 transition-colors flex gap-2 items-center">
+        <Plus className="text-white w-6 h-6" weight="bold" />
+        <p>Adicionar novo produto</p>
+      </button>
+      <div className="mt-4">
         {isLoading ? (
           <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <Spinner className="h-16 w-16 border-[6px]" />
@@ -39,17 +42,9 @@ export default function UserPhones() {
             ))}
           </div>
         ) : (
-          <div>
-            <p className="text-xl text-zinc-600">
-              Você não tem nenhum produto à venda
-            </p>
-            <button
-              onClick={() => navigate("/home")}
-              className="border-[2px] border-solid border-orange-300 p-2 rounded-lg mt-4 text-orange-400"
-            >
-              Voltar pra tela inicial
-            </button>
-          </div>
+          <p className="text-xl text-zinc-400">
+            Você não tem nenhum produto à venda
+          </p>
         )}
       </div>
     </div>
