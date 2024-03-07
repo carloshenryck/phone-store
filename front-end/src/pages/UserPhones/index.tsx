@@ -7,6 +7,7 @@ import PhoneCard from "@/components/PhoneCard";
 import { usePhoneStore } from "@/stores/PhoneStore";
 import { Plus } from "@phosphor-icons/react";
 import AddPhoneDialog from "@/components/AddPhoneDialog";
+import Header from "@/components/Header";
 
 export default function UserPhones() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -24,7 +25,8 @@ export default function UserPhones() {
   }, []);
 
   return (
-    <div>
+    <div className="w-4/5 mx-auto max-w-[1250px] pb-16 pt-8">
+      <Header />
       <h1 className="mt-14 text-5xl font-light text-zinc-800">
         Seus <span className="text-orange-400">produtos</span>
       </h1>

@@ -1,4 +1,5 @@
 import { Phone } from "@/@types/Phone";
+import Header from "@/components/Header";
 import Input from "@/components/Input";
 import PhoneCard from "@/components/PhoneCard";
 import Spinner from "@/components/Spinner";
@@ -18,7 +19,8 @@ export default function Home() {
   }, []);
 
   return (
-    <div>
+    <div className="w-4/5 mx-auto max-w-[1250px] pb-16 pt-8">
+      <Header />
       <h1 className="mt-14 text-5xl font-light text-zinc-800">
         Olá, <span className="text-orange-400">Fulano</span>
       </h1>
