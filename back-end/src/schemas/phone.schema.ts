@@ -6,6 +6,7 @@ export const basicPhoneSchema = z.object({
   model: z.string(),
   price: z.number(),
   color: z.string(),
+  img: z.string(),
 })
 
 export const phoneWithDetailsSchema = basicPhoneSchema.extend({
@@ -21,6 +22,7 @@ export const phoneWithVariationsSchema = basicPhoneSchema.extend({
     z.object({
       price: z.number(),
       color: z.string(),
+      img: z.string(),
     })
   )
-}).omit({price: true, color: true})
+}).omit({price: true, color: true, img: true})

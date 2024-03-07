@@ -23,7 +23,8 @@ export const registerPhoneService = async (phone: PhoneType, userId: number) => 
       return await phoneAttributes.create(
         { 
           price: variation.price, 
-          color: variation.color, 
+          color: variation.color,
+          img: variation.img, 
           phoneId: phone.id
         }, 
         { transaction }

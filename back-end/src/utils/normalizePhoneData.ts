@@ -17,7 +17,8 @@ export const normalizePhoneData = (
         data: [
           {
             color: phone.color,
-            price: phone.price
+            price: phone.price,
+            img: phone.img
           }
         ]
       }
@@ -32,7 +33,8 @@ export const normalizePhoneData = (
         data: [
           {
             color: phone.details.color,
-            price: phone.price
+            price: phone.price,
+            img: phone.img
           }
         ]
       }

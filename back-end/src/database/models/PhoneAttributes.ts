@@ -1,6 +1,5 @@
-import { DataTypes, Model } from "sequelize";
+import { DataTypes, Model, Sequelize } from "sequelize";
 import db from '.'
-import Phone from "./Phone";
 
 class PhoneAttributes extends Model {
   declare id: number;
@@ -22,6 +21,10 @@ PhoneAttributes.init(
       allowNull: false,
     },
     color: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    img: {
       type: DataTypes.STRING,
       allowNull: false,
     },
