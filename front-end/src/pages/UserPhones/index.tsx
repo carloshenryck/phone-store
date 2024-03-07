@@ -6,10 +6,15 @@ import Spinner from "@/components/Spinner";
 import PhoneCard from "@/components/PhoneCard";
 import { usePhoneStore } from "@/stores/PhoneStore";
 import { Plus } from "@phosphor-icons/react";
+import AddPhoneDialog from "@/components/AddPhoneDialog";
 
 export default function UserPhones() {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isAddPhoneDialogOpen, setIsAddPhoneDialogOpen] =
+    useState<boolean>(false);
   const { phones, setPhones } = usePhoneStore();
+
+  const addPhone = () => {};
 
   useEffect(() => {
     fetchApi<Phone[]>("/phone/getUserPhones").then((response) => {
@@ -26,7 +31,10 @@ export default function UserPhones() {
       <div className="mt-4">
         <Input />
       </div>
-      <button className="mt-16 bg-orange-400 text-white p-3 rounded-md hover:bg-orange-300 transition-colors flex gap-2 items-center">
+      <button
+        className="mt-16 bg-orange-400 text-white p-3 rounded-md hover:bg-orange-300 transition-colors flex gap-2 items-center"
+        onClick={() => setIsAddPhoneDialogOpen(true)}
+      >
         <Plus className="text-white w-6 h-6" weight="bold" />
         <p>Adicionar novo produto</p>
       </button>
@@ -47,6 +55,12 @@ export default function UserPhones() {
           </p>
         )}
       </div>
+      <AddPhoneDialog
+        isDialogOpen={isAddPhoneDialogOpen}
+        setIsDialogOpen={setIsAddPhoneDialogOpen}
+        isLoading={isLoading}
+        addFunction={addPhone}
+      />
     </div>
   );
 }
