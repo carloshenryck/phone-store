@@ -1,7 +1,8 @@
 import { MagnifyingGlass } from "@phosphor-icons/react";
-import { HTMLAttributes } from "react";
 
-export default function Input(props: HTMLAttributes<HTMLInputElement>) {
+export default function Input(
+  props: React.InputHTMLAttributes<HTMLInputElement>
+) {
   return (
     <div className="relative">
       <input

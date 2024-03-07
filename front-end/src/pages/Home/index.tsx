@@ -6,12 +6,40 @@ import PhoneCard from "@/components/PhoneCard";
 import Spinner from "@/components/Spinner";
 import { useUserStore } from "@/stores/UserStore";
 import { fetchApi } from "@/utils/fetchApi";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const { user, setUser } = useUserStore();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [phones, setPhones] = useState<Phone[]>([]);
+  const [brand, setBrand] = useState<string>("");
+
+  const getfilteredPhones = () => {
+    if (searchQuery.length === 0 && (brand.length === 0 || brand === "All")) {
+      return phones;
+    }
+
+    let filteredPhones = [...phones];
+    if (searchQuery.length > 0) {
+      filteredPhones = filteredPhones.filter((phone) =>
+        phone.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    if (brand.length > 0 && brand !== "All") {
+      filteredPhones = filteredPhones.filter((phone) => phone.brand === brand);
+    }
+
+    return filteredPhones;
+  };
 
   useEffect(() => {
     if (!user) {
@@ -36,8 +64,24 @@ export default function Home() {
           Olá, <span className="text-orange-400">{user?.name}</span>
         </h1>
       )}
-      <div className="mt-4">
-        <Input />
+      <div className="mt-4 flex items-center gap-2">
+        <Input
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <Select value={brand} onValueChange={(value) => setBrand(value)}>
+          <SelectTrigger className="w-44 h-12 border-none">
+            <SelectValue placeholder="Todos" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="All">Todos</SelectItem>
+            <SelectItem value="Samsung">Samsung</SelectItem>
+            <SelectItem value="Motorola">Motorola</SelectItem>
+            <SelectItem value="Apple">Apple</SelectItem>
+            <SelectItem value="Huawei">Huawei</SelectItem>
+            <SelectItem value="Xiaomi">Xiaomi</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
       <div className="w-full mt-16">
         {isLoading ? (
@@ -46,7 +90,7 @@ export default function Home() {
           </div>
         ) : (
           <div className="grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-4">
-            {phones.map((phone) => (
+            {getfilteredPhones().map((phone) => (
               <PhoneCard key={phone.id} {...phone} />
             ))}
           </div>

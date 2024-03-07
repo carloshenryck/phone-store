@@ -97,7 +97,7 @@ export default function PhoneCard({
           alt="celular"
         />
         <p className="text-sm text-gray-500 mt-8">{brand}</p>
-        <p>{name}</p>
+        <p className="truncate">{name}</p>
       </div>
       <div className="mt-8 text-start">
         <p className="text-base text-gray-500">A partir de</p>
