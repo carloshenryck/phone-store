@@ -1,6 +1,6 @@
 # Phone store
 
-### URL PARA O SITE: https://phone-store-front-end.vercel.app/
+#### URL PARA O SITE: https://phone-store-front-end.vercel.app/
 
 ## API
 Base URL: **https://phone-store-ivory-omega.vercel.app**
