@@ -1,6 +1,7 @@
 export interface phoneVariations {
-  color: string
-  price: number
+  color: string;
+  price: number;
+  img: string;
 }
 
 export interface Phone {
@@ -8,5 +9,5 @@ export interface Phone {
   brand: string;
   model: string;
   name: string;
-  data: phoneVariations[]
+  data: phoneVariations[];
 }

@@ -47,14 +47,14 @@ export default function Home() {
         ) : (
           <div className="grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-4">
             {phones.map((phone) => (
-              <button className="bg-white flex justify-between h-96 flex-col px-4 py-8">
+              <button className="bg-white flex justify-between h-[25rem] flex-col px-4 py-8">
                 <div className="w-full text-start flex flex-col grow">
                   <img
-                    className="h-3/6 aspect-square self-center grow"
-                    src=""
+                    className="aspect-square h-0 self-center grow object-contain"
+                    src={phone.data[0].img}
                     alt="celular"
                   />
-                  <p className="text-sm text-gray-500">{phone.brand}</p>
+                  <p className="text-sm text-gray-500 mt-8">{phone.brand}</p>
                   <p>{phone.name}</p>
                 </div>
                 <div className="mt-8 text-start">
