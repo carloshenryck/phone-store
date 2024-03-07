@@ -100,7 +100,7 @@ export default function Register() {
           disabled={isLoading}
         >
           {isLoading ? (
-            <Spinner className="h-4 w-4 border-[2px] text-orange-400" />
+            <Spinner className="h-4 w-4 border-[2px] text-orange-200" />
           ) : (
             "Cadastrar"
           )}

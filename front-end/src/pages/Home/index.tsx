@@ -14,8 +14,11 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
+import { isUserLogged } from "@/utils/verifyToken";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+  const navigate = useNavigate();
   const { user, setUser } = useUserStore();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -42,6 +45,11 @@ export default function Home() {
   };
 
   useEffect(() => {
+    if (!isUserLogged()) {
+      navigate("/");
+      return;
+    }
+
     if (!user) {
       fetchApi<User>("/me").then((response) => {
         if (response?.data) {

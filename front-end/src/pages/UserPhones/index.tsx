@@ -7,14 +7,22 @@ import { useUserPhoneStore } from "@/stores/UserPhoneStore";
 import { Plus } from "@phosphor-icons/react";
 import AddPhoneDialog from "@/components/AddPhoneDialog";
 import Header from "@/components/Header";
+import { isUserLogged } from "@/utils/verifyToken";
+import { useNavigate } from "react-router-dom";
 
 export default function UserPhones() {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isAddPhoneDialogOpen, setIsAddPhoneDialogOpen] =
     useState<boolean>(false);
   const { userPhones, setUserPhones } = useUserPhoneStore();
 
   useEffect(() => {
+    if (!isUserLogged()) {
+      navigate("/");
+      return;
+    }
+
     fetchApi<Phone[]>("/phone/getUserPhones").then((response) => {
       setUserPhones(response?.data ?? []);
       setIsLoading(false);
