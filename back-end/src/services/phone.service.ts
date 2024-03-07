@@ -52,7 +52,8 @@ export const getAllPhonesService = async () => {
     },
     attributes: {
       exclude: ['userId']
-    }
+    },
+    order: ['createdAt']
   });
   
   return phones;
@@ -73,6 +74,7 @@ export const getUserPhonesService = async (userId: number) => {
     where: {
       userId,
     },
+    order: ['createdAt']
   });
   
   return phones;
@@ -133,7 +135,7 @@ export const updatePhoneService = async (phoneId: number, userId: number, data: 
           where: {
             phoneId: phoneId,
           },
-          transaction
+          transaction,
         }
       );
     }));

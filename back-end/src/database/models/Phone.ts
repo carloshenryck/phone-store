@@ -1,6 +1,5 @@
 import { DataTypes, Model } from "sequelize";
 import db from '.'
-import User from "./User";
 import PhoneAttributes from "./PhoneAttributes";
 
 class Phone extends Model {
@@ -44,7 +43,7 @@ Phone.init(
  }, {
   sequelize: db,
   tableName: 'phone',
-  timestamps: false,
+  timestamps: true,
   underscored: true,
  })
 
