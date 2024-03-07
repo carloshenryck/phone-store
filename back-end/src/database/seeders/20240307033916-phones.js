@@ -36,19 +36,19 @@ module.exports = {
           user_id: 1,
         },
         {
-          name: "Samsung Galaxy S22+ 128 GB",
+          name: "Samsung Galaxy S22+ Vermelho 128 GB",
           brand: "Samsung",
           model: "Galaxy S22+",
           user_id: 2,
         },
         {
-          name: "Motorola Moto G62 128 GB",
+          name: "Motorola Moto G62 256 GB",
           brand: "Motorola",
           model: "Moto G62",
           user_id: 2,
         },
         {
-          name: "Samsung Galaxy S20 128GB Cloud Pink 4G",
+          name: "Samsung Galaxy S20 256GB",
           brand: "Samsung",
           model: "Galaxy S20",
           user_id: 2,

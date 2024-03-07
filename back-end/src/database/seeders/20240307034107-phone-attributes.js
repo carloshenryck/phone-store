@@ -54,13 +54,13 @@ module.exports = {
         {
           price: 3455,
           color: "Rose",
-          img: "https://i.ibb.co/C6cg0qz/image.png",
+          img: "https://i.ibb.co/SxZQ9CD/image.png",
           phone_id: 7,
         },
         {
           price: 1236,
           color: "Rose",
-          img: "https://i.ibb.co/9VvpfWB/image.png",
+          img: "https://i.ibb.co/NTnNpCJ/image.png",
           phone_id: 8,
         },
       ],
