@@ -2,6 +2,7 @@ import { BasicPhone, PhoneWithDetails, PhoneWithVariations } from "../@types/Pho
 import { isPhoneWithDetails, isPhoneWithVariations, isBasicPhone } from "./verifyPhoneInterface";
 import { basicPhoneSchema, phoneWithDetailsSchema, phoneWithVariationsSchema } from "../schemas/phone.schema";
 import { UnprocessableEntity } from "../@types/express/errors";
+import { ZodError } from "zod";
 
 export const normalizePhoneData = (
   phone: PhoneWithDetails | PhoneWithVariations | BasicPhone
@@ -51,6 +52,9 @@ export const normalizePhoneData = (
 
     return normalizedPhoneData;
   } catch (error) {
+    if (error instanceof ZodError) {
+      throw new UnprocessableEntity(error.errors[0].message);
+    }
     throw new UnprocessableEntity('Os dados passados estão incompletos');
   }
 }
